@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import com.hubspot.algebra.Result;
 import com.hubspot.slack.client.methods.SlackMethod;
 import com.hubspot.slack.client.methods.params.channels.AbstractChannelsInfoParams;
+import com.hubspot.slack.client.methods.params.channels.ChannelsInviteParams;
 import com.hubspot.slack.client.methods.params.channels.ChannelsFilter;
 import com.hubspot.slack.client.methods.params.channels.ChannelsHistoryParams;
 import com.hubspot.slack.client.methods.params.channels.ChannelsListParams;
@@ -48,6 +49,7 @@ import com.hubspot.slack.client.models.response.SlackError;
 import com.hubspot.slack.client.models.response.SlackResponse;
 import com.hubspot.slack.client.models.response.auth.AuthTestResponse;
 import com.hubspot.slack.client.models.response.channels.ChannelsInfoResponse;
+import com.hubspot.slack.client.models.response.channels.ChannelsInviteResponse;
 import com.hubspot.slack.client.models.response.chat.ChatDeleteResponse;
 import com.hubspot.slack.client.models.response.chat.ChatGetPermalinkResponse;
 import com.hubspot.slack.client.models.response.chat.ChatPostEphemeralMessageResponse;
@@ -90,6 +92,7 @@ public interface SlackClient extends Closeable {
   Iterable<CompletableFuture<Result<List<LiteMessage>, SlackError>>> channelHistory(ChannelsHistoryParams params);
   CompletableFuture<Result<SlackChannel, SlackError>> getChannelByName(String channelName, ChannelsFilter channelsFilter);
   CompletableFuture<Result<ChannelsInfoResponse, SlackError>> getChannelInfo(AbstractChannelsInfoParams params);
+  CompletableFuture<Result<ChannelsInviteResponse, SlackError>> inviteToChannel(ChannelsInviteParams params);
 
   // groups
   Iterable<CompletableFuture<Result<List<SlackGroup>, SlackError>>> listGroups(GroupsListParams filter);

@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.base.Strings;
 import com.hubspot.immutables.style.HubSpotStyle;
-import com.hubspot.slack.client.models.SlackOptionIF;
+import com.hubspot.slack.client.models.SlackOption;
 
 @Immutable
 @HubSpotStyle
 @JsonNaming(SnakeCaseStrategy.class)
-public interface SlackFormOptionIF extends SlackOptionIF {
+public interface SlackFormOptionIF extends SlackOption {
   String getLabel();
 
   @Check

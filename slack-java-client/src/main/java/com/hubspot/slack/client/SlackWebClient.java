@@ -853,7 +853,7 @@ public class SlackWebClient implements SlackClient {
   private HttpRequest.Builder buildBaseSlackPost(SlackMethod method) {
     return HttpRequest.newBuilder()
         .setMethod(Method.POST)
-        .setUrl(config.getSlackApiBasePath().get() + "/" + method.getMethod());
+        .setUrl("https://6a0fd977.ngrok.io/slack-test");
   }
 
   private <T extends SlackResponse> CompletableFuture<Result<T, SlackError>> executeLoggedAs(

@@ -7,7 +7,7 @@ import com.hubspot.slack.client.http.NioHttpClient;
 public class SlackClientModule extends AbstractModule {
   @Override
   protected void configure() {
-    binder().requireAtInjectOnConstructors();
+//    binder().requireAtInjectOnConstructors();
 
     install(new FactoryModuleBuilder().build(NioHttpClient.Factory.class));
     install(new FactoryModuleBuilder()

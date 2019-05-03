@@ -14,8 +14,8 @@ import com.hubspot.immutables.style.HubSpotStyle;
 @JsonNaming(SnakeCaseStrategy.class)
 public interface FieldIF {
   Optional<String> getTitle();
-  String getValue();
+  Optional<String> getValue();
 
-  @JsonProperty("short")
-  boolean isShort();
+  @JsonProperty(value = "short")
+  Optional<Boolean> isShort();
 }

@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.hubspot.immutables.style.HubSpotStyle;
 import org.immutables.value.Value;
 
+import java.util.Optional;
+
 @Value.Immutable
 @HubSpotStyle
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public interface SlackJpgFileIF extends SlackImageFile {
-    @Value.Default
     @Override
-    default SlackFileType getFiletype() {
-        return SlackFileType.JPG;
+    default Optional<String> getFiletype() {
+        return Optional.ofNullable(SlackFileType.JPG.type);
     }
 }

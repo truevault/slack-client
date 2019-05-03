@@ -1,6 +1,7 @@
 package com.hubspot.slack.client;
 
 import java.io.Closeable;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,6 +30,7 @@ import com.hubspot.slack.client.methods.params.conversations.ConversationsInfoPa
 import com.hubspot.slack.client.methods.params.conversations.ConversationsListParams;
 import com.hubspot.slack.client.methods.params.conversations.ConversationsUserParams;
 import com.hubspot.slack.client.methods.params.dialog.DialogOpenParams;
+import com.hubspot.slack.client.methods.params.files.FilesListParams;
 import com.hubspot.slack.client.methods.params.files.FilesSharedPublicUrlParams;
 import com.hubspot.slack.client.methods.params.files.FilesUploadParams;
 import com.hubspot.slack.client.methods.params.group.GroupsKickParams;
@@ -68,6 +70,7 @@ import com.hubspot.slack.client.models.response.conversations.ConversationsInvit
 import com.hubspot.slack.client.models.response.conversations.ConversationsOpenResponse;
 import com.hubspot.slack.client.models.response.conversations.ConversationsUnarchiveResponse;
 import com.hubspot.slack.client.models.response.dialog.DialogOpenResponse;
+import com.hubspot.slack.client.models.response.files.FilesListResponse;
 import com.hubspot.slack.client.models.response.files.FilesSharedPublicUrlResponse;
 import com.hubspot.slack.client.models.response.files.FilesUploadResponse;
 import com.hubspot.slack.client.models.response.group.GroupsKickResponse;
@@ -153,6 +156,7 @@ public interface SlackClient extends Closeable {
   // files
   CompletableFuture<Result<FilesUploadResponse, SlackError>> uploadFile(FilesUploadParams params);
   CompletableFuture<Result<FilesSharedPublicUrlResponse, SlackError>> shareFilePublically(FilesSharedPublicUrlParams params);
+  CompletableFuture<Result<FilesListResponse, SlackError>> listFilesPaginated(FilesListParams params);
 
   // extension
   <T extends SlackResponse> CompletableFuture<Result<T, SlackError>> postSlackCommand(

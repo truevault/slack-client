@@ -33,5 +33,5 @@ public interface SlackImageFile extends SlackFile {
   Optional<Integer> getOriginalHeight();
 
   @JsonProperty("has_rich_preview")
-  boolean hasRichPreview();
+  Optional<Boolean> hasRichPreview();
 }

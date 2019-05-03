@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.hubspot.slack.client.methods.params.files.FilesListParams;
+import com.hubspot.slack.client.models.response.files.FilesListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -809,6 +811,11 @@ public class SlackWebClient implements SlackClient {
   @Override
   public CompletableFuture<Result<FilesSharedPublicUrlResponse, SlackError>> shareFilePublically(FilesSharedPublicUrlParams params) {
     return postSlackCommand(SlackMethods.files_sharedPublicURL, params, FilesSharedPublicUrlResponse.class);
+  }
+
+  @Override
+  public CompletableFuture<Result<FilesListResponse, SlackError>> listFilesPaginated(FilesListParams params) {
+    return postSlackCommand(SlackMethods.files_list, params, FilesListResponse.class);
   }
 
   @Override

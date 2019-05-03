@@ -1,4 +1,4 @@
-package com.hubspot.slack.client.models.files;
+package com.hubspot.slack.client.methods.params.files;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,9 +10,8 @@ import java.util.Optional;
 @Immutable
 @HubSpotStyle
 @JsonNaming(SnakeCaseStrategy.class)
-public interface SlackCsvFileIF extends SlackTextFileCore {
-  @Override
-  default Optional<String> getFiletype() {
-    return Optional.ofNullable(SlackFileType.CSV.type);
-  }
+public interface FilesListParamsIF {
+    Optional<Integer> getCount();
+
+    Optional<Integer> getPage();
 }

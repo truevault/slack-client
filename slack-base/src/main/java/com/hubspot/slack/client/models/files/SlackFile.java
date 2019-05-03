@@ -1,17 +1,19 @@
 package com.hubspot.slack.client.models.files;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import java.util.List;
+import java.util.Optional;
+
 @JsonTypeInfo(
     use = Id.NAME,
     include = As.EXISTING_PROPERTY,
-    property = "filetype"
+    property = "filetype",
+    defaultImpl = SlackGenericFile.class
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SlackTextFile.class, name = "text"),
@@ -28,7 +30,8 @@ public interface SlackFile {
   String getName();
   String getTitle();
   String getMimetype();
-  SlackFileType getFiletype();
+
+  Optional<String> getFiletype();
   String getPrettyType();
 
   @JsonProperty("user")
@@ -46,14 +49,14 @@ public interface SlackFile {
   boolean getDisplayAsBot();
   String getUsername();
   String getUrlPrivate();
-  String getUrlPrivateDownload();
+  Optional<String> getUrlPrivateDownload();
 
   String getPermalink();
-  String getPermalinkPublic();
+  Optional<String> getPermalinkPublic();
 
   int getCommentsCount();
   @JsonProperty("is_starred")
-  boolean isStarred();
+  Optional<Boolean> isStarred();
 
   @JsonProperty("channels")
   List<String> getChannelIds();

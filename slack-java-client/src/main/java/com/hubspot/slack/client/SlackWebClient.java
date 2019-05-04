@@ -12,7 +12,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.hubspot.slack.client.methods.params.files.FilesInfoParams;
 import com.hubspot.slack.client.methods.params.files.FilesListParams;
+import com.hubspot.slack.client.models.response.files.FilesInfoResponse;
 import com.hubspot.slack.client.models.response.files.FilesListResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -816,6 +818,13 @@ public class SlackWebClient implements SlackClient {
   @Override
   public CompletableFuture<Result<FilesListResponse, SlackError>> listFilesPaginated(FilesListParams params) {
     return postSlackCommand(SlackMethods.files_list, params, FilesListResponse.class);
+  }
+
+  @Override
+  public CompletableFuture<Result<FilesInfoResponse, SlackError>> getFileInfo(String fileId) {
+    FilesInfoParams params = FilesInfoParams.builder().setFileId(fileId).build();
+
+    return postSlackCommand(SlackMethods.files_info, params, FilesInfoResponse.class);
   }
 
   @Override

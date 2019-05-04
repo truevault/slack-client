@@ -70,6 +70,7 @@ import com.hubspot.slack.client.models.response.conversations.ConversationsInvit
 import com.hubspot.slack.client.models.response.conversations.ConversationsOpenResponse;
 import com.hubspot.slack.client.models.response.conversations.ConversationsUnarchiveResponse;
 import com.hubspot.slack.client.models.response.dialog.DialogOpenResponse;
+import com.hubspot.slack.client.models.response.files.FilesInfoResponse;
 import com.hubspot.slack.client.models.response.files.FilesListResponse;
 import com.hubspot.slack.client.models.response.files.FilesSharedPublicUrlResponse;
 import com.hubspot.slack.client.models.response.files.FilesUploadResponse;
@@ -157,6 +158,7 @@ public interface SlackClient extends Closeable {
   CompletableFuture<Result<FilesUploadResponse, SlackError>> uploadFile(FilesUploadParams params);
   CompletableFuture<Result<FilesSharedPublicUrlResponse, SlackError>> shareFilePublically(FilesSharedPublicUrlParams params);
   CompletableFuture<Result<FilesListResponse, SlackError>> listFilesPaginated(FilesListParams params);
+  CompletableFuture<Result<FilesInfoResponse, SlackError>> getFileInfo(String fileId);
 
   // extension
   <T extends SlackResponse> CompletableFuture<Result<T, SlackError>> postSlackCommand(

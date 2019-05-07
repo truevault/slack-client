@@ -69,6 +69,7 @@ import com.hubspot.slack.client.methods.params.conversations.ConversationsHistor
 import com.hubspot.slack.client.methods.params.conversations.ConversationsInfoParams;
 import com.hubspot.slack.client.methods.params.conversations.ConversationsListParams;
 import com.hubspot.slack.client.methods.params.conversations.ConversationsUserParams;
+import com.hubspot.slack.client.methods.params.conversations.ConversationRepliesPagedParams;
 import com.hubspot.slack.client.methods.params.dialog.DialogOpenParams;
 import com.hubspot.slack.client.methods.params.files.FilesSharedPublicUrlParams;
 import com.hubspot.slack.client.methods.params.files.FilesUploadParams;
@@ -115,6 +116,7 @@ import com.hubspot.slack.client.models.response.conversations.ConversationsInfoR
 import com.hubspot.slack.client.models.response.conversations.ConversationsInviteResponse;
 import com.hubspot.slack.client.models.response.conversations.ConversationsOpenResponse;
 import com.hubspot.slack.client.models.response.conversations.ConversationsUnarchiveResponse;
+import com.hubspot.slack.client.models.response.conversations.ConversationsRepliesResponse;
 import com.hubspot.slack.client.models.response.dialog.DialogOpenResponse;
 import com.hubspot.slack.client.models.response.files.FilesSharedPublicUrlResponse;
 import com.hubspot.slack.client.models.response.files.FilesUploadResponse;
@@ -662,6 +664,62 @@ public class SlackWebClient implements SlackClient {
                 err -> false,
                 ok -> ok.hasMore()
             )
+        );
+        CompletableFuture<Long> nextOffset = nextOffset(pagingDirection, pageFuture);
+
+        return new LazyLoadingPage<>(pageFuture, hasMoreFuture, nextOffset);
+      }
+    };
+  }
+
+  @Override
+  public Iterable<CompletableFuture<Result<List<LiteMessage>, SlackError>>> getConversationReplies(ConversationRepliesPagedParams params) {
+    PagingDirection pagingDirection = params.getPagingDirection();
+    return new AbstractPagedIterable<Result<List<LiteMessage>, SlackError>, Long>() {
+      @Override
+      protected Long getInitialOffset() {
+        return null;
+      }
+
+      @Override
+      protected LazyLoadingPage<Result<List<LiteMessage>, SlackError>, Long> getPage(Long offset) throws Exception {
+        ConversationRepliesPagedParams.Builder requestBuilder = ConversationRepliesPagedParams.builder()
+                .from(params);
+        if (!params.getLimit().isPresent()) {
+          requestBuilder.setLimit(config.getConversationsHistoryMessageBatchSize().get());
+        }
+
+        Optional.ofNullable(offset)
+                .ifPresent(presentOffset -> {
+                  if (pagingDirection == PagingDirection.FORWARD_IN_TIME) {
+                    requestBuilder.setOldestTimestamp(presentOffset.toString());
+                  } else {
+                    requestBuilder.setNewestTimestamp(presentOffset.toString());
+                  }
+                });
+
+        ConversationRepliesPagedParams currentRequest = requestBuilder.build();
+        if (LOG.isTraceEnabled()) {
+          LOG.trace("Fetching conversation replies page for {} from [{}, {}]",
+                  currentRequest.getChannelId(), currentRequest.getOldestTimestamp(), currentRequest.getNewestTimestamp()
+          );
+        }
+
+        CompletableFuture<Result<ConversationsRepliesResponse, SlackError>> resultFuture = postSlackCommand(
+                SlackMethods.conversations_replies,
+                currentRequest,
+                ConversationsRepliesResponse.class
+        );
+
+        CompletableFuture<Result<List<LiteMessage>, SlackError>> pageFuture = resultFuture.thenApply(
+                result -> result.mapOk(ConversationsRepliesResponse::getMessages)
+        );
+
+        CompletableFuture<Boolean> hasMoreFuture = resultFuture.thenApply(
+                result -> result.match(
+                        err -> false,
+                        ok -> ok.hasMore()
+                )
         );
         CompletableFuture<Long> nextOffset = nextOffset(pagingDirection, pageFuture);
 

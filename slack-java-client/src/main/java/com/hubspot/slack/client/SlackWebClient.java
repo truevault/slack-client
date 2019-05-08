@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 
 import com.hubspot.slack.client.methods.params.files.FilesInfoParams;
 import com.hubspot.slack.client.methods.params.files.FilesListParams;
+import com.hubspot.slack.client.methods.params.files.FilesDeleteParams;
 import com.hubspot.slack.client.models.response.files.FilesInfoResponse;
 import com.hubspot.slack.client.models.response.files.FilesListResponse;
+import com.hubspot.slack.client.models.response.files.FilesDeleteResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -883,6 +885,13 @@ public class SlackWebClient implements SlackClient {
     FilesInfoParams params = FilesInfoParams.builder().setFileId(fileId).build();
 
     return postSlackCommand(SlackMethods.files_info, params, FilesInfoResponse.class);
+  }
+
+  @Override
+  public CompletableFuture<Result<FilesDeleteResponse, SlackError>> deleteFile(String fileId) {
+    FilesDeleteParams params = FilesDeleteParams.builder().setFileId(fileId).build();
+
+    return postSlackCommand(SlackMethods.files_delete, params, FilesDeleteResponse.class);
   }
 
   @Override

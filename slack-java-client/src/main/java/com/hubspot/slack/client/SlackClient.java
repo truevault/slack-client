@@ -75,6 +75,7 @@ import com.hubspot.slack.client.models.response.files.FilesInfoResponse;
 import com.hubspot.slack.client.models.response.files.FilesListResponse;
 import com.hubspot.slack.client.models.response.files.FilesSharedPublicUrlResponse;
 import com.hubspot.slack.client.models.response.files.FilesUploadResponse;
+import com.hubspot.slack.client.models.response.files.FilesDeleteResponse;
 import com.hubspot.slack.client.models.response.group.GroupsKickResponse;
 import com.hubspot.slack.client.models.response.im.ImOpenResponse;
 import com.hubspot.slack.client.models.response.reactions.AddReactionResponse;
@@ -161,6 +162,7 @@ public interface SlackClient extends Closeable {
   CompletableFuture<Result<FilesSharedPublicUrlResponse, SlackError>> shareFilePublically(FilesSharedPublicUrlParams params);
   CompletableFuture<Result<FilesListResponse, SlackError>> listFilesPaginated(FilesListParams params);
   CompletableFuture<Result<FilesInfoResponse, SlackError>> getFileInfo(String fileId);
+  CompletableFuture<Result<FilesDeleteResponse, SlackError>> deleteFile(String fileId);
 
   // extension
   <T extends SlackResponse> CompletableFuture<Result<T, SlackError>> postSlackCommand(
